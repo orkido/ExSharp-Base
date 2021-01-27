@@ -15,7 +15,9 @@ namespace ExSharpBase.API
 {
     class Service
     {
-        public static JObject GetActivePlayerData()
+        private const double cache_timeout = 500.0;
+
+        public static JObject GetActivePlayerData_realtime()
         {
             if (IsLiveGameRunning())
             {
@@ -26,7 +28,7 @@ namespace ExSharpBase.API
                 using (StreamReader reader = new StreamReader(stream))
                 {
                     try { return JObject.Parse(reader.ReadToEnd()); }
-                    catch (Exception Ex)
+                    catch (Exception)
                     {
                         LogService.Log("PlayerDataParseFailedException", LogLevel.Error);
                         throw new Exception("PlayerDataParseFailedException");
@@ -40,7 +42,19 @@ namespace ExSharpBase.API
             }
         }
 
-        public static JArray GetAllPlayerData()
+        private static JObject GetActivePlayerData_cache;
+        private static DateTime GetActivePlayerData_cache_timestamp;
+
+        public static JObject GetActivePlayerData() {
+            if (DateTime.UtcNow - GetActivePlayerData_cache_timestamp > TimeSpan.FromMilliseconds(cache_timeout)) {
+                GetActivePlayerData_cache_timestamp = DateTime.UtcNow;
+                GetActivePlayerData_cache = GetActivePlayerData_realtime();
+            }
+
+            return GetActivePlayerData_cache;
+        }
+
+        public static JArray GetAllPlayerData_realtime()
         {
             if (IsLiveGameRunning())
             {
@@ -51,7 +65,7 @@ namespace ExSharpBase.API
                 using (StreamReader reader = new StreamReader(stream))
                 {
                     try { return JArray.Parse(reader.ReadToEnd()); }
-                    catch (Exception Ex)
+                    catch (Exception)
                     {
                         LogService.Log("AllPlayerDataParseFailedException", LogLevel.Error);
                         throw new Exception("AllPlayerDataParseFailedException");
@@ -65,7 +79,19 @@ namespace ExSharpBase.API
             }
         }
 
-        public static JObject GetGameStatsData()
+        private static JArray GetAllPlayerData_cache;
+        private static DateTime GetAllPlayerData_cache_timestamp;
+
+        public static JArray GetAllPlayerData() {
+            if(DateTime.UtcNow - GetAllPlayerData_cache_timestamp > TimeSpan.FromMilliseconds(cache_timeout)) {
+                GetAllPlayerData_cache_timestamp = DateTime.UtcNow;
+                GetAllPlayerData_cache = GetAllPlayerData_realtime();
+            }
+
+            return GetAllPlayerData_cache;
+        }
+
+        public static JObject GetGameStatsData_realtime()
         {
             if (IsLiveGameRunning())
             {
@@ -76,7 +102,7 @@ namespace ExSharpBase.API
                 using (StreamReader reader = new StreamReader(stream))
                 {
                     try { return JObject.Parse(reader.ReadToEnd()); }
-                    catch (Exception Ex)
+                    catch (Exception)
                     {
                         Console.WriteLine("GameDataParseFailedException");
                         throw new Exception("GameDataParseFailedException");
@@ -90,7 +116,19 @@ namespace ExSharpBase.API
             }
         }
 
-        public static bool IsLiveGameRunning()
+        private static JObject GetGameStatsData_cache;
+        private static DateTime GetGameStatsData_cache_timestamp;
+
+        public static JObject GetGameStatsData() {
+            if(DateTime.UtcNow - GetGameStatsData_cache_timestamp > TimeSpan.FromMilliseconds(cache_timeout)) {
+                GetGameStatsData_cache_timestamp = DateTime.UtcNow;
+                GetGameStatsData_cache = GetGameStatsData_realtime();
+            }
+
+            return GetGameStatsData_cache;
+        }
+
+        public static bool IsLiveGameRunning_realtime()
         {
             HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create("https://127.0.0.1:2999/liveclientdata/allgamedata");
             System.Net.ServicePointManager.ServerCertificateValidationCallback += delegate (object sender, System.Security.Cryptography.X509Certificates.X509Certificate certificate,
@@ -111,7 +149,7 @@ namespace ExSharpBase.API
                     if (response.StatusCode == HttpStatusCode.OK) flag = true;
                 }
             }
-            catch (Exception Ex)
+            catch (Exception)
             {
                 LogService.Log($"Failed To Connect To A Running Game Instance. Exiting In 10 Seconds...", LogLevel.Error);
                 Thread.Sleep(10000);
@@ -119,6 +157,18 @@ namespace ExSharpBase.API
             }
 
             return flag;
+        }
+
+        private static bool IsLiveGameRunning_cache;
+        private static DateTime IsLiveGameRunning_cache_timestamp;
+
+        public static bool IsLiveGameRunning() {
+            if(DateTime.UtcNow - IsLiveGameRunning_cache_timestamp > TimeSpan.FromMilliseconds(cache_timeout)) {
+                IsLiveGameRunning_cache_timestamp = DateTime.UtcNow;
+                IsLiveGameRunning_cache = IsLiveGameRunning_realtime();
+            }
+
+            return IsLiveGameRunning_cache;
         }
     }
 }

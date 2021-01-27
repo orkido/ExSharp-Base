@@ -16,6 +16,7 @@ namespace ExSharpBase.Modules
             {
                 string UnitRadiusDataString = File.ReadAllText(Directory.GetCurrentDirectory() + @"\UnitRadius.json");
                 Game.Objects.LocalPlayer.UnitRadiusData = JObject.Parse(UnitRadiusDataString);
+                Game.Objects.Player.UnitRadiusData = JObject.Parse(UnitRadiusDataString);
 
                 LogService.Log("Successfully Parsed Unit Radius Data.");
             }

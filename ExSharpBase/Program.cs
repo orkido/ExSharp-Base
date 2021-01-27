@@ -32,6 +32,16 @@ namespace ExSharpBase
                 await Task.Run(() => DrawBase.Show());
 
             }).GetAwaiter().GetResult();
+            while(!API.Service.IsLiveGameRunning()) {
+                System.Threading.Thread.Sleep(1000);
+            }
+            API.Service.IsLiveGameRunning();
+            LogService.Log("Found Live Instance of The Game.");
+            // Events.EventsManager.SubscribeToEvents();
+            UnitRadiusService.ParseUnitRadiusData();
+            SpellDBService.ParseSpellDBData();
+            LogService.Log("Initialising Overlay Rendering...");
+            DrawBase.Show();
         }
     }
 }

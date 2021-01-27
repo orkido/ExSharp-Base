@@ -7,7 +7,7 @@ using System.Management;
 using ExSharpBase.Modules;
 using ExSharpBase.Enums;
 
-namespace ExSharpBase.Events
+/*namespace ExSharpBase.Events
 {
     class EventsManager
     {
@@ -51,3 +51,4 @@ namespace ExSharpBase.Events
         }
     }
 }
+*/

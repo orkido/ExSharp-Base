@@ -22,26 +22,13 @@ namespace ExSharpBase.API
 
         private static PlayerData GetPlayerData(int PlayerId)
         {
-            var AllPlayerData = Service.GetAllPlayerData();
+            var AllPlayerData = GetAllPlayers();
             if (AllPlayerData.Count <= PlayerId)
             {
                 throw new IndexOutOfRangeException($"player: {PlayerId} is not available");
             }
             var PlayerData = AllPlayerData[PlayerId];
-            PlayerData playerData = new PlayerData()
-            {
-                ChampionName = PlayerData["championName"].ToString(),
-                IsBot = PlayerData["isBot"].ToObject<bool>(),
-                IsDead = PlayerData["isDead"].ToObject<bool>(),
-                Level = PlayerData["level"].ToObject<int>(),
-                RolePosition = PlayerData["position"].ToString(),
-                RawChampionName = PlayerData["rawChampionName"].ToString(),
-                RespawnTimer = PlayerData["respawnTimer"].ToObject<float>(),
-                SkinID = PlayerData["skinID"].ToObject<int>(),
-                SummonerName = PlayerData["summonerName"].ToString(),
-                Team = PlayerData["team"].ToString()
-            };
-            return playerData;
+            return PlayerData;
         }
 
         private static IList<PlayerData> GetAllPlayers()

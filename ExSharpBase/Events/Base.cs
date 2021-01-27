@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ExSharpBase.Modules;
-
+/*
 namespace ExSharpBase.Events
 {
     class Base
@@ -53,3 +53,4 @@ namespace ExSharpBase.Events
 
     public delegate void TickElapsed();
 }
+*/

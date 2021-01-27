@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Management;
 using ExSharpBase.Modules;
 
-namespace ExSharpBase.Events
+/*namespace ExSharpBase.Events
 {
     class Game
     {
@@ -27,4 +27,4 @@ namespace ExSharpBase.Events
             }
         }
     }
-}
+}*/

@@ -15,6 +15,60 @@ namespace ExSharpBase.Game
     {
         public static int GetLocalPlayer { get; } = Memory.Read<int>(OffsetManager.Instances.LocalPlayer);
 
+        public static int GetPlayer(int id) {
+            var ListStruct = Memory.Read<int>(OffsetManager.Instances.HeroList);
+            var ListLength = Memory.Read<int>(ListStruct + 8);
+
+            if(id >= ListLength)
+                throw new IndexOutOfRangeException($"player: {id} is not available");
+
+            var List = Memory.Read<int>(ListStruct + 4);
+            return Memory.Read<int>(List + 4 * id);
+        }
+
+        public static int GetPlayerCount() {
+            var ListStruct = Memory.Read<int>(OffsetManager.Instances.HeroList);
+            var ListLength = Memory.Read<int>(ListStruct + 8);
+
+            return ListLength;
+        }
+
+        public static int GetMinion(int id) {
+            var ListStruct = Memory.Read<int>(OffsetManager.Instances.MinionList);
+            var ListLength = Memory.Read<int>(ListStruct + 8);
+
+            if(id >= ListLength)
+                throw new IndexOutOfRangeException($"minion: {id} is not available");
+
+            var List = Memory.Read<int>(ListStruct + 4);
+            return Memory.Read<int>(List + 4 * id);
+        }
+
+        public static int GetMinionCount() {
+            var ListStruct = Memory.Read<int>(OffsetManager.Instances.MinionList);
+            var ListLength = Memory.Read<int>(ListStruct + 8);
+
+            return ListLength;
+        }
+
+        public static int GetTurret(int id) {
+            var ListStruct = Memory.Read<int>(OffsetManager.Instances.TurretList);
+            var ListLength = Memory.Read<int>(ListStruct + 8);
+
+            if(id >= ListLength)
+                throw new IndexOutOfRangeException($"turret: {id} is not available");
+
+            var List = Memory.Read<int>(ListStruct + 4);
+            return Memory.Read<int>(List + 4 * id);
+        }
+
+        public static int GetTurretCount() {
+            var ListStruct = Memory.Read<int>(OffsetManager.Instances.TurretList);
+            var ListLength = Memory.Read<int>(ListStruct + 8);
+
+            return ListLength;
+        }
+
         public static float GetGameTime()
         {
             return API.GameStats.GetGameTime();

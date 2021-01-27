@@ -45,8 +45,13 @@ namespace ExSharpBase.Overlay
 
         internal void OnDraw()
         {
+            DateTime lastRender = DateTime.UtcNow;
             RenderLoop.Run(this, () =>
             {
+                int elapsedSinceRender = (int) (DateTime.UtcNow - lastRender).TotalMilliseconds;
+                System.Threading.Thread.Sleep(Math.Max(0, 1000 / 80 - elapsedSinceRender));
+                lastRender = DateTime.UtcNow;
+
                 if(!ExSharpBase.Events.Drawing.IsMenuBeingDrawn) NativeImport.BringWindowToTop(this.Handle);
 
                 DrawFactory.device.Clear(ClearFlags.Target, new SharpDX.Mathematics.Interop.RawColorBGRA(0, 0, 0, 0), 1.0f, 0);
@@ -92,7 +97,7 @@ namespace ExSharpBase.Overlay
                 {
                     FaceName = "Fixedsys Regular",
                     CharacterSet = FontCharacterSet.Default,
-                    Height = 20,
+                    Height = 40,
                     Weight = FontWeight.Bold,
                     MipLevels = 0,
                     OutputPrecision = FontPrecision.Default,

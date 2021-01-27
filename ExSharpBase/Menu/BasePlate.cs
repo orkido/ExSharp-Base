@@ -23,7 +23,13 @@ namespace ExSharpBase.Menu
 
         private void BasePlate_Load(object sender, EventArgs e)
         {
-
+            DrawRangeCheckBox_CheckedChanged(null, null);
+            MoveToMouseCheckBox_CheckedChanged(null, null);
+            DrawTurretRangeCheckBox_CheckedChanged(null, null);
+            DrawExecutionCheckBox_CheckedChanged(null, null);
+            DrawMinionExecutionCheckBox_CheckedChanged(null, null);
+            DrawEnemyWarningCheckBox_CheckedChanged(null, null);
+            DrawEnemyWarningRangeNumericUpDown_ValueChanged(null, null);
         }
 
         private void TopPanel_MouseDown(object sender, MouseEventArgs e)
@@ -37,8 +43,7 @@ namespace ExSharpBase.Menu
 
         private void DrawRangeCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            if (DrawRangeCheckBox.Checked) Drawing.DrawingProperties["DrawRange"] = true;
-            else Drawing.DrawingProperties["DrawRange"] = false;
+            Drawing.DrawingProperties.DrawRange = DrawRangeCheckBox.Checked;
         }
 
         private void MoveToMouseCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -53,6 +58,26 @@ namespace ExSharpBase.Menu
 
                 Game.Engine.IssueOrder(Enums.GameObjectOrder.MoveTo);
             }
+        }
+
+        private void DrawTurretRangeCheckBox_CheckedChanged(object sender, EventArgs e) {
+            Drawing.DrawingProperties.DrawTurretRange = DrawTurretRangeCheckBox.Checked;
+        }
+
+        private void DrawExecutionCheckBox_CheckedChanged(object sender, EventArgs e) {
+            Drawing.DrawingProperties.DrawExecution = DrawExecutionCheckBox.Checked;
+        }
+
+        private void DrawMinionExecutionCheckBox_CheckedChanged(object sender, EventArgs e) {
+            Drawing.DrawingProperties.DrawMinionExecution = DrawMinionExecutionCheckBox.Checked;
+        }
+
+        private void DrawEnemyWarningCheckBox_CheckedChanged(object sender, EventArgs e) {
+            Drawing.DrawingProperties.DrawEnemyWarning = DrawEnemyWarningCheckBox.Checked;
+        }
+
+        private void DrawEnemyWarningRangeNumericUpDown_ValueChanged(object sender, EventArgs e) {
+            Drawing.DrawingProperties.DrawEnemyWarningRange = (int) DrawEnemyWarningRangeNumericUpDown.Value;
         }
     }
 }
